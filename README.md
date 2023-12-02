@@ -1,6 +1,10 @@
 # SciELO Extractor
 
-This is a simples CLI application to extract data from SciELO (Scientific Electronic Library Online).
+This is a simples CLI application to extract data from [SciELO (Scientific Electronic Library Online)](https://www.scielo.br/).
+
+<p align="center">
+  <img src='https://scielo.org/static/images/logo-scielo-portal-no-label.svg' style='width:100px'>
+</p>
 
 > SciELO (Scientific Electronic Library Online) is a bibliographic database, digital library, and cooperative electronic publishing model of open access journals. SciELO was created to meet the scientific communication needs of developing countries and provides an efficient way to increase visibility and access to scientific literature. Originally established in Brazil in 1997, today there are 16 countries in the SciELO network and its journal collections: Argentina, Bolivia, Brazil, Chile, Colombia, Costa Rica, Cuba, Ecuador, Mexico, Paraguay, Peru, Portugal, South Africa, Spain, Uruguay, and Venezuela. ([Wikipedia](https://pt.wikipedia.org/wiki/Scientific_Electronic_Library_Online))
 
