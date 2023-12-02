@@ -1,0 +1,7 @@
+name: scielo-extractor
+dependencies:
+  - python=3.8
+  - pip
+  - pip:
+    - -e .
+    - twine

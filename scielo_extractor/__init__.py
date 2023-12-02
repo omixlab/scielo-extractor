@@ -1,2 +1,2 @@
-from . import cli
 from . import extractor
+from . import cli
