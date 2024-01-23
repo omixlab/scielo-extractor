@@ -1,3 +1,5 @@
+extractor.py
+
 import urllib
 import lxml.html
 import requests
@@ -13,8 +15,8 @@ class ScieloSearch:
     self.total_papers_xpath = '/html/body/section/div/div/div[1]/div[1]/div[1]/strong'
     self.result_paper_item_xpath = '/html/body/section/div/div/div[1]/div[2]/div[3]/div'
 
-  def query(self, query, params={'from': 0, 'page': 1}, format=None, progress=False):
-    papers = []
+  def query(self, query, params={'from': 0, 'page': 1}, result_size=5000, format=None, progress=False):
+    total_papers = []
     params = {'q': query, **params}
     total = self.get_total_papers(query, params)
     if not total:
@@ -25,27 +27,32 @@ class ScieloSearch:
     else:
       pages = range(1, total + 1, self.page_size)
     for page in pages:
-      papers += self.get_papers_in_page(query, params)
+      count_papers = len(total_papers)
+      if count_papers >= result_size:
+        break
+      total_papers += self.get_papers_in_page(query, result_size, count_papers, params)
       params['page'] += page
       params['from'] += self.page_size
     if format:
-      return self.format(papers, format=format)
+      return self.format(total_papers, format=format)
     else:
-      return papers
+      return total_papers
 
   def get_total_papers(self, query, params):
     encoded_query_params = urllib.parse.urlencode(params)
     request_url = f'{self.base_uri}?{encoded_query_params}'
     tree = self.send_request(request_url)
     if tree.xpath(self.total_papers_xpath):
-      return int(tree.xpath(self.total_papers_xpath)[0].text)
+      return int(tree.xpath(self.total_papers_xpath)[0].text.replace(' ', ''))
 
-  def get_papers_in_page(self, query, params):
+  def get_papers_in_page(self, query, result_size, count_papers, params):
     papers = []
     encoded_query_params = urllib.parse.urlencode(params)
     request_url = f'{self.base_uri}?{encoded_query_params}'
     tree = self.send_request(request_url).xpath(self.result_paper_item_xpath)
     for element in tree:
+      if count_papers + len(papers) == result_size:
+        break
       if 'id' not in element.attrib:
         continue
       scielo_id = '-'.join(element.attrib['id'].split('-')[0:2])
