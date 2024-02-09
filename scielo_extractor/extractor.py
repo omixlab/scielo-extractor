@@ -1,5 +1,3 @@
-extractor.py
-
 import urllib
 import lxml.html
 import requests
